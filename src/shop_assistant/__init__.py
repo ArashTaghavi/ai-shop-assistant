@@ -5,6 +5,7 @@ from .store import ChatHistory
 from .generation import ContextBuilder
 from .generation import PromptBuilder
 from .generation import Generator
+from .generation import HistorySummarizer
 from .pipeline import pipeline
 from .utils import helper
 
@@ -16,6 +17,7 @@ __all__ = [
     "ContextBuilder",
     "PromptBuilder",
     "Generator",
+    "HistorySummarizer",
     "pipeline",
     "helper",
 ]

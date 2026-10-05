@@ -6,6 +6,7 @@ from shop_assistant import (
     PromptBuilder,
     Generator,
     ChatHistory,
+    HistorySummarizer,
 )
 from shop_assistant.utils import rtl_print
 
@@ -26,7 +27,13 @@ def pipeline(model="gemma4:e4b-it-qat"):
 
     generator = Generator(model=model)
 
-    history = ChatHistory()
+    summarizer = HistorySummarizer(generator=generator)
+
+    history = ChatHistory(
+        summarizer=summarizer,
+        max_messages=10,
+        keep_recent=4,
+    )
 
     # Run for each query
     while True:
@@ -37,8 +44,8 @@ def pipeline(model="gemma4:e4b-it-qat"):
             break
 
         if query.lower() == "h":
-            rtl_print(history.get_messages(for_history=True))
-            break
+            rtl_print(history.get_messages(for_history=True), title="خلاصه مکالمه")
+            continue
 
         rtl_print(f"\nشما: {query}\n")
 
