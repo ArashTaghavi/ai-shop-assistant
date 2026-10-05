@@ -8,6 +8,7 @@ from shop_assistant import (
     ChatHistory,
     HistorySummarizer,
 )
+
 from shop_assistant.utils import rtl_print
 
 
@@ -49,17 +50,17 @@ def pipeline(model="gemma4:e4b-it-qat"):
 
         rtl_print(f"\nشما: {query}\n")
 
-        # Query embedding
+        # 1. Query embedding
         query_embedding = embedder.embed(texts=[query])
 
-        # Retrieval
+        # 2. Retrieval
         retrieved_documents = store.search(query_embedding=query_embedding[0])
 
-        # Build context
+        # 3. Build context
         context_builder = ContextBuilder(retrieved_documents=retrieved_documents)
         context = context_builder.build()
 
-        # Build prompt
+        # 4. Build prompt
         prompt_builder = PromptBuilder(
             query=query,
             context=context,
@@ -67,7 +68,7 @@ def pipeline(model="gemma4:e4b-it-qat"):
         )
         prompt = prompt_builder.build()
 
-        # Generate answer
+        # 5. Generate answer
         answer = generator.answer(prompt=prompt)
 
         # Update Chat History
